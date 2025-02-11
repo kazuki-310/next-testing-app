@@ -1,18 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCounter } from '@/features/home/hooks/useCounter';
 
 export function Counter() {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCount((prevCount) => prevCount + 10);
-    }, 10000);
-
-    // コンポーネントのクリーンアップ時にインターバルをクリア
-    return () => clearInterval(interval);
-  }, []);
+  const { count, increment, decrement } = useCounter();
 
   if (count === 10000) {
     // doubleはテストでは実行されない
@@ -27,10 +18,10 @@ export function Counter() {
       <h2>カウント: {count}</h2>
 
       <div className='flex gap-4'>
-        <button className='border border-gray-300 bg-gray-100 p-2 px-4 rounded' onClick={() => setCount(count + 1)}>
+        <button className='border border-gray-300 bg-gray-100 p-2 px-4 rounded' onClick={increment}>
           プラス
         </button>
-        <button className='border border-gray-300 bg-gray-100 p-2 px-4 rounded' onClick={() => setCount(count - 1)}>
+        <button className='border border-gray-300 bg-gray-100 p-2 px-4 rounded' onClick={decrement}>
           マイナス
         </button>
       </div>
