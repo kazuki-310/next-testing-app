@@ -14,25 +14,31 @@ beforeEach(() => {
 });
 
 describe('LoginForm', () => {
-  it('初期レンダリング', () => {
+  const setup = () => {
     render(<LoginForm />);
 
-    const emailField = screen.queryByPlaceholderText('user@example.com');
-    const passwordField = screen.queryByPlaceholderText('password');
-    const button = screen.queryByText('ログイン');
+    const emailInput = screen.getByPlaceholderText('user@example.com');
+    const passwordInput = screen.getByPlaceholderText('password');
+    const loginButton = screen.getByText('ログイン');
 
-    expect(emailField).toBeInTheDocument();
-    expect(passwordField).toBeInTheDocument();
-    expect(button).toBeInTheDocument();
+    return { emailInput, passwordInput, loginButton };
+  };
+
+  it('初期レンダリング', () => {
+    const { emailInput, passwordInput, loginButton } = setup();
+
+    expect(emailInput).toBeInTheDocument();
+    expect(passwordInput).toBeInTheDocument();
+    expect(loginButton).toBeInTheDocument();
   });
 
   it('無効なメールアドレスとパスワードでフォームを送信した場合、適切なバリデーションメッセージが表示される', async () => {
-    render(<LoginForm />);
+    const { emailInput, passwordInput, loginButton } = setup();
 
-    await userEvent.type(screen.getByPlaceholderText('user@example.com'), 'invalid#email.com');
-    await userEvent.type(screen.getByPlaceholderText('password'), 'short');
+    await userEvent.type(emailInput, 'invalid#email.com');
+    await userEvent.type(passwordInput, 'short');
 
-    userEvent.click(screen.getByText('ログイン'));
+    userEvent.click(loginButton);
 
     await waitFor(() => {
       expect(screen.queryByText('正しいメールアドレス形式ではありません')).toBeInTheDocument();
@@ -45,30 +51,26 @@ describe('LoginForm', () => {
       () => new Promise((resolve) => setTimeout(() => resolve({ status: 'success' }), 1000))
     );
 
-    render(<LoginForm />);
+    const { emailInput, passwordInput, loginButton } = setup();
 
-    const button = screen.getByText('ログイン');
-
-    await userEvent.type(screen.getByPlaceholderText('user@example.com'), 'test-user@example.com');
-    await userEvent.type(screen.getByPlaceholderText('password'), 'testpassword');
-
-    await userEvent.click(button);
+    await userEvent.type(emailInput, 'test-user@example.com');
+    await userEvent.type(passwordInput, 'testpassword');
+    await userEvent.click(loginButton);
 
     await waitFor(() => {
-      expect(button).toBeDisabled();
-      expect(button).toHaveTextContent('Loading');
+      expect(loginButton).toBeDisabled();
+      expect(loginButton).toHaveTextContent('Loading');
     });
   });
 
   it('有効なメールアドレスとパスワードでログインを試みた場合、ログイン処理が正常に行われることを確認する', async () => {
     const signInMockFn = signIn as jest.Mock;
 
-    render(<LoginForm />);
+    const { emailInput, passwordInput, loginButton } = setup();
 
-    await userEvent.type(screen.getByPlaceholderText('user@example.com'), 'test-user@example.com');
-    await userEvent.type(screen.getByPlaceholderText('password'), 'testpassword');
-
-    await userEvent.click(screen.getByText('ログイン'));
+    await userEvent.type(emailInput, 'test-user@example.com');
+    await userEvent.type(passwordInput, 'testpassword');
+    await userEvent.click(loginButton);
 
     expect(signInMockFn.mock.calls[0][0]).toBe('credentials');
     expect(signInMockFn.mock.calls[0][1]).toEqual({
@@ -81,12 +83,11 @@ describe('LoginForm', () => {
   it('ログイン処理中にエラーが発生した場合、エラーメッセージが表示される', async () => {
     (signIn as jest.Mock).mockRejectedValue('ログインエラー');
 
-    render(<LoginForm />);
+    const { emailInput, passwordInput, loginButton } = setup();
 
-    await userEvent.type(screen.getByPlaceholderText('user@example.com'), 'test-user@example.com');
-    await userEvent.type(screen.getByPlaceholderText('password'), 'testpassword');
-
-    await userEvent.click(screen.getByText('ログイン'));
+    await userEvent.type(emailInput, 'test-user@example.com');
+    await userEvent.type(passwordInput, 'testpassword');
+    await userEvent.click(loginButton);
 
     expect(screen.queryByText('ログイン中にエラーが発生しました')).toBeInTheDocument();
   });
@@ -100,17 +101,15 @@ describe('LoginForm', () => {
 
     const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
 
-    render(<LoginForm />);
+    const { emailInput, passwordInput, loginButton } = setup();
 
-    const button = screen.getByText('ログイン');
-
-    await user.type(screen.getByPlaceholderText('user@example.com'), 'test-user@example.com');
-    await user.type(screen.getByPlaceholderText('password'), 'testpassword');
-    await user.click(button);
+    await user.type(emailInput, 'test-user@example.com');
+    await user.type(passwordInput, 'testpassword');
+    await user.click(loginButton);
 
     await waitFor(() => {
-      expect(button).toBeDisabled();
-      expect(button).toHaveTextContent('Loading');
+      expect(loginButton).toBeDisabled();
+      expect(loginButton).toHaveTextContent('Loading');
     });
 
     act(() => {
@@ -118,8 +117,8 @@ describe('LoginForm', () => {
     });
 
     await waitFor(() => {
-      expect(button).not.toBeDisabled();
-      expect(button).toHaveTextContent('ログイン');
+      expect(loginButton).not.toBeDisabled();
+      expect(loginButton).toHaveTextContent('ログイン');
       expect(screen.getByText('ログイン中にエラーが発生しました')).toBeInTheDocument();
     });
 
