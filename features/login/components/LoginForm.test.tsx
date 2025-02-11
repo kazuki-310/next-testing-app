@@ -14,6 +14,11 @@ beforeEach(() => {
 });
 
 describe('LoginForm', () => {
+  test('ログインフォームが正しくレンダリングされていることを確認する', () => {
+    const { asFragment } = render(<LoginForm />);
+    expect(asFragment()).toMatchSnapshot();
+  });
+
   const setup = () => {
     render(<LoginForm />);
 

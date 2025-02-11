@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoginForm ログインフォームが正しくレンダリングされていることを確認する 1`] = `
+<DocumentFragment>
+  <form
+    class="space-y-4 w-full text-gray-700"
+  >
+    <div>
+      <label
+        class="block text-md font-medium text-gray-700"
+        for="email"
+      >
+        メールアドレス
+      </label>
+      <input
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+        id="email"
+        name="email"
+        placeholder="user@example.com"
+      />
+    </div>
+    <div>
+      <label
+        class="block text-md font-medium text-gray-700"
+        for="password"
+      >
+        パスワード
+      </label>
+      <input
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+        id="password"
+        name="password"
+        placeholder="password"
+        type="password"
+      />
+    </div>
+    <div>
+      <button
+        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-md font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        type="submit"
+      >
+        ログイン
+      </button>
+    </div>
+  </form>
+</DocumentFragment>
+`;
