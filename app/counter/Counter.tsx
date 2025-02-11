@@ -14,6 +14,14 @@ export function Counter() {
     return () => clearInterval(interval);
   }, []);
 
+  if (count === 10000) {
+    // doubleはテストでは実行されない
+    double(count);
+    console.log('Hello, world');
+  } else {
+    console.log('test');
+  }
+
   return (
     <div className='m-12'>
       <h2>カウント: {count}</h2>
@@ -28,4 +36,8 @@ export function Counter() {
       </div>
     </div>
   );
+}
+
+function double(a: number) {
+  return a * 2;
 }
