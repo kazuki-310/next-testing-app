@@ -1,6 +1,6 @@
-import { PrismaClient, User } from "@prisma/client";
-import bcrypt from "bcrypt";
-import { fakerJA as faker } from "@faker-js/faker";
+import { PrismaClient, User } from '@prisma/client';
+import bcrypt from 'bcrypt';
+import { fakerJA as faker } from '@faker-js/faker';
 
 // https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding
 
@@ -8,24 +8,21 @@ const prisma = new PrismaClient();
 
 function getRandomDate(daysAgo: number) {
   const today = new Date();
-  const pastDate = new Date(
-    today.getTime() - Math.random() * daysAgo * 24 * 60 * 60 * 1000
-  );
+  const pastDate = new Date(today.getTime() - Math.random() * daysAgo * 24 * 60 * 60 * 1000);
   return pastDate;
 }
 
 async function main() {
-
-  const hashedPassword = await bcrypt.hash("password1234", 10);
-  const mainUserEmail = "main-user@example.com";
+  const hashedPassword = await bcrypt.hash('password1234', 10);
+  const mainUserEmail = 'main-user@example.com';
   try {
     await resetData();
-  
+
     await prisma.user.deleteMany();
 
     const mainUser = await prisma.user.create({
       data: {
-        name: "main-user",
+        name: 'main-user',
         email: mainUserEmail,
         password: hashedPassword,
       },
