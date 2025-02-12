@@ -16,6 +16,10 @@ const config: Config = {
 
   // jestがテストを実行する前に読み込むセットアップファイルを指定
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/$1',
+  },
 };
 
 export default createJestConfig(config);
