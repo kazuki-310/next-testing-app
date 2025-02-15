@@ -17,7 +17,7 @@ export async function Header() {
           {session ? (
             <>
               <Link className='text-lg hover:text-gray-300' href='/blog'>
-                ブログ投稿
+                ブログ一覧
               </Link>
               <LogoutButton />
             </>

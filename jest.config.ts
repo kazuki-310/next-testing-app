@@ -20,6 +20,9 @@ const config: Config = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
   },
+
+  // jestに無視してほしいパスを指定
+  testPathIgnorePatterns: ['/e2e/', '/tests-examples/'],
 };
 
 export default createJestConfig(config);
